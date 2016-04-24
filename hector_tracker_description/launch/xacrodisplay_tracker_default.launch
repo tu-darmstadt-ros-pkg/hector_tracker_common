@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<launch>
+  
+  <include file="$(find hector_tracker_description)/launch/xacrodisplay_common.launch">
+    <arg name="robot_description" value="$(find xacro)/xacro.py $(find hector_tracker_description)/urdf/tracker_default.urdf.xacro"/>  
+  </include>  
+  
+</launch>
