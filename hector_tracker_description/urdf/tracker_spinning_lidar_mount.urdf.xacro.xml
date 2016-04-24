@@ -27,7 +27,7 @@
         </geometry>
       </visual>
     </link>-->
-    <joint name="${name}_lidar_spinning_joint" type="continuous">
+    <joint name="${name}_spin_joint" type="continuous">
       <!--<origin xyz="0.061 0.0 0.134" rpy="0 0 0"/>-->
       <xacro:insert_block name="origin"/>
       <parent link="${parent}" />
@@ -47,7 +47,7 @@
     
     <transmission name="${name}_lidar_spinning_joint_transmission">
       <type>transmission_interface/SimpleTransmission</type>
-      <joint name="${name}_lidar_spinning_joint">
+      <joint name="${name}_spin_joint">
         <hardwareInterface>EffortJointInterface</hardwareInterface>
       </joint>
       <actuator name="${name}_lidar_spinning_joint_motor">
@@ -55,7 +55,7 @@
         <mechanicalReduction>1</mechanicalReduction>
       </actuator>
     </transmission>
-    <gazebo reference="${name}_lidar_spinning_joint">
+    <gazebo reference="${name}_spin_joint">
       <implicitSpringDamper>1</implicitSpringDamper>
     </gazebo>
     
