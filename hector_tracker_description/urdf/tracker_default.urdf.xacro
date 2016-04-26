@@ -1,215 +1,215 @@
 <?xml version="1.0"?>
 
 <robot name="taurob_tracker"
-    xmlns:xacro="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
-    
-    <xacro:property name="flipper_offset_x" value="0.205" />
-    <xacro:property name="flipper_offset_y" value="0.15" />
-    <xacro:property name="flipper_offset_z" value="0.099" />
-    
-    <xacro:property name="M_PI" value="3.14159" />
-    <xacro:property name="angle_deg" value="45" />
-    
-    <!--Required to quickly work around bug in collada_urdf (https://github.com/ros/robot_model/issues/132)-->
-    <xacro:property name="box_scale_factor" value="1.0" />
-    
-    <xacro:include filename="$(find taurob_tracker_description)/urdf/tracker_chassis.urdf.xacro.xml" />
-   
-    <xacro:tracker_chassis_macro />
-    
-    <!--Examples of adding additional robot parts below--> 
-    <xacro:include filename="$(find taurob_arm_description)/urdf/taurob_arm_collision_geoms_simple.urdf.xacro.xml" />
-    <xacro:include filename="$(find taurob_arm_description)/urdf/taurob_arm.urdf.xacro.xml" />
-    
-    <xacro:taurob_arm_macro parent="base_link">
-      <origin xyz="0.12 0 0.185" rpy="0 0 ${M_PI/2}"/>
-    </xacro:taurob_arm_macro >
-    
-    <!--<xacro:include filename="$(find hector_xacro_tools)/urdf/sensor_macros.urdf.xacro"/>-->
-    <xacro:include filename="$(find hector_sensors_description)/urdf/thermaleye_camera.urdf.xacro"/>
-    <xacro:include filename="$(find hector_sensors_description)/urdf/flir_a35_camera.urdf.xacro"/>
-    <xacro:include filename="$(find hector_sensors_description)/urdf/realsense_camera.urdf.xacro"/>
-    <xacro:include filename="$(find hector_sensors_description)/urdf/generic_camera.urdf.xacro"/>
-    <xacro:include filename="$(find hector_sensors_description)/urdf/hokuyo_utm30lx.urdf.xacro" />
-    
-    <xacro:include filename="$(find hector_components_description)/urdf/vision_box_common.gazebo.xacro" />
-    <xacro:include filename="$(find hector_components_description)/urdf/vision_box_common_dimensions.urdf.xacro" />
-    <xacro:include filename="$(find hector_components_description)/urdf/vision_box_dimensions_hector2.urdf.xacro" />
-    
-    <joint name="sensor_head_yaw_joint" type="revolute">
-      <origin xyz="${0.05} -0.08 0.05" rpy="0 0 ${M_PI*-0.5}"/>
-      <parent link="arm_link_3"/>
-      <child link="sensor_head_yaw_link"/>
-      <axis xyz="0 0 1"/>
-      <limit lower="${-M_PI*3/4}" upper="${M_PI*3/4}" effort="100" velocity="100"/>
-    </joint>
-    
-    <link name="sensor_head_yaw_link">      
-      <xacro:inertial_sphere mass="0.1" diameter="0.07"/>
-      <visual>
-        <origin xyz="0.0 0.0 ${cameraYawServo_size_z/2}" rpy="0 0 0"/>
-        <geometry>
-          <box size="${cameraYawServo_size_x} ${cameraYawServo_size_y} ${cameraYawServo_size_z}"/>
-        </geometry>
-        <material name="Blue"/>
-      </visual>
-      <collision>
-        <origin xyz="0.0 0.0 ${cameraYawServo_size_z/2}" rpy="0 0 0"/>
-        <geometry>
-          <box size="${cameraYawServo_size_x} ${cameraYawServo_size_y} ${cameraYawServo_size_z}"/>
-        </geometry>
-      </collision>
-    </link>
-    
-    <joint name="sensor_head_pitch_joint" type="revolute">
-      <origin xyz="0 0 ${cameraYawServo_size_z}" rpy="0 0 0"/>
-      <parent link="sensor_head_yaw_link"/>
-      <child link="sensor_head_mount_link"/>
-      <axis xyz="0 1 0"/>
-      <limit lower="${-M_PI/2}" upper="${M_PI/2}" effort="100" velocity="100"/>
-    </joint>
-    <link name="sensor_head_mount_link">
-      <xacro:inertial_sphere mass="0.05" diameter="0.07"/>
-    </link>
-    
-    <gazebo reference="sensor_head_yaw_link">
-      <material>Gazebo/Grey</material>
-    </gazebo>   
-    
-    <gazebo reference="sensor_head_mount_link">
-      <material>Gazebo/Grey</material>
-    </gazebo>
-    
-    <xacro:include filename="$(find hector_xacro_tools)/urdf/joint_macros.urdf.xacro" />
-    <xacro:joint_standard_transmission name="sensor_head_yaw_joint"/>
-    <xacro:joint_standard_transmission name="sensor_head_pitch_joint"/>
-    
-    <joint name="stab_laser_roll_joint" type="revolute">
-      <origin xyz="${-0.21} 0.1 ${0.4}" rpy="0 0 0"/>
-      <parent link="base_link"/>
-      <child link="stab_laser_roll_link"/>
-      <axis xyz="1 0 0"/>
-      <limit lower="${-M_PI/2}" upper="${M_PI/2}" effort="100" velocity="100"/>
-    </joint>
-    
-    <link name="stab_laser_roll_link">
-      <xacro:inertial_sphere mass="0.1" diameter="0.07"/>
-      <visual>
-        <origin xyz="${laser1RollServo_size_x/2} 0.0 0.0" rpy="0 0 0"/>
-        <geometry>
-          <box size="${laser1RollServo_size_x} ${laser1RollServo_size_y} ${laser1RollServo_size_z}"/>
-        </geometry>
-        <material name="Blue"/>
-      </visual>
-      <collision>
-        <origin xyz="${laser1RollServo_size_x/2} 0.0 0.0" rpy="0 0 0"/>
-        <geometry>
-          <box size="${laser1RollServo_size_x} ${laser1RollServo_size_y} ${laser1RollServo_size_z}"/>
-        </geometry>
-      </collision>
-    </link>
-    
-    <joint name="stab_laser_pitch_joint" type="revolute">
-      <origin xyz="${laser1RollServo_size_x} 0 0" rpy="0 0 0"/>
-      <parent link="stab_laser_roll_link"/>
-      <child link="stab_laser_pitch_link"/>
-      <axis xyz="0 1 0"/>
-      <limit lower="${-M_PI/2}" upper="${M_PI/2}" effort="100" velocity="100"/>
-    </joint>
-    
-    <link name="stab_laser_pitch_link">
-      <xacro:inertial_sphere mass="0.1" diameter="0.07"/>
-      <visual>
-        <origin xyz="0.0 0.0 ${laser1_size_z/2}" rpy="0 0 0"/>
-        <geometry>
-          <!--<box size="${laser1_size_x} ${laser1_size_y} ${laser1_size_z}" />-->
-          <box size="${laser1_size_x} ${laser1_size_y} 0.01"/>
-        </geometry>
-        <material name="Grey"/>
-      </visual>
-      <collision>
-        <origin xyz="0.0 0.0 ${laser1_size_z/2}" rpy="0 0 0"/>
-        <geometry>
-          <!--<box size="${laser1_size_x} ${laser1_size_y} ${laser1_size_z}" />-->
-          <box size="${laser1_size_x} ${laser1_size_y} 0.01"/>
-        </geometry>
-      </collision>
-    </link>
-
-    <gazebo reference="stab_laser_roll_link">
-      <material>Gazebo/Grey</material>
-    </gazebo>   
-    
-    <gazebo reference="stab_laser_pitch_joint">
-      <material>Gazebo/Grey</material>
-    </gazebo>    
-    
-    <xacro:joint_standard_transmission name="stab_laser_roll_joint"/>
-    <xacro:joint_standard_transmission name="stab_laser_pitch_joint"/>
-    
-    <joint name="structure_addon_joint" type="fixed">
-      <origin xyz="${-0.275} 0.1 ${0.3}" rpy="0 0 0"/>
-      <parent link="base_link"/>
-      <child link="structure_addons_link"/>      
-    </joint>
-    
-    <link name="structure_addons_link">
-      <xacro:inertial_cube mass="0.1" diameter="0.07"/>
-      <visual>
-        <origin xyz="-0.0 0.0 0.0" rpy="0 0 0"/>
-        <geometry>
-          <box size="${0.20 * box_scale_factor} ${0.1 * box_scale_factor} ${0.2 * box_scale_factor}"/>
-        </geometry>
-        <material name="Red">
-          <color rgba="0.6 0.0 0.0 1"/>
-        </material>
-      </visual>
-      <collision>
-        <origin xyz="-0.0 0.0 0.0" rpy="0 0 0"/>
-        <geometry>
-          <box size="0.20 0.1 0.2"/>
-        </geometry>
-      </collision>
-    </link>
-    
-    <gazebo reference="structure_addons_link">
-      <material>Gazebo/Grey</material>
-    </gazebo> 
-    
-    <xacro:flir_a35_camera_model name="infrared" parent="sensor_head_mount_link">
-      <origin xyz="${infrared_x_position} ${infrared_y_position} ${infrared_z_position}" rpy="0 0 0"/>
-    </xacro:flir_a35_camera_model>
-    
-    <xacro:realsense_camera_model name="openni" parent="sensor_head_mount_link">
-      <origin xyz="${kinect_x_position} ${kinect_y_position}  ${0.035}" rpy="${kinect_roll_position} ${kinect_pitch_position} ${kinect_yaw_position}"/>
-    </xacro:realsense_camera_model>
-    
-    <xacro:hokuyo_utm30lx name="stab_laser" parent="stab_laser_pitch_link" ros_topic="/stab_laser/scan_gazebo" update_rate="40" ray_count="1081" min_angle="135" max_angle="-135">
-      <origin xyz="${laser1_center_x_offset} 0 ${laser1_plane_height}" rpy="0 0 0"/>
-    </xacro:hokuyo_utm30lx>
-    
-    <!-- <xacro:vision_box_common_gazebo_plugins/> -->
-    
-    <xacro:include filename="$(find hector_tracker_description)/urdf/tracker_spinning_lidar_mount.urdf.xacro.xml" />
-    
-    <xacro:tracker_spinning_lidar_mount_macro parent="base_link"  name="spin_lidar" scaling="0.001">
-      <origin xyz="-0.3 0.1 0.55" rpy="0.0 ${-M_PI*0.5} 0.0"/>
-      <origin xyz="0 0.0 0.0" rpy="0.0 ${M_PI*0.75} 0.0"/>
-    </xacro:tracker_spinning_lidar_mount_macro>
-    
-    <xacro:generic_camera name="front_chassis_cam" parent="base_link" ros_topic="image_raw" cam_info_topic="camera_info" update_rate="10" res_x="640" res_y="480" image_format="R8G8B8" hfov="120">
-      <origin xyz="${0.1+0.122} 0.0 0.11" rpy="0 0 0"/>
-    </xacro:generic_camera>
+       xmlns:xacro="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
   
-    <xacro:generic_camera name="rear_chassis_cam" parent="base_link" ros_topic="image_raw" cam_info_topic="camera_info" update_rate="10" res_x="640" res_y="480" image_format="R8G8B8" hfov="120">
-      <origin xyz="${-0.59+0.122} 0.0 0.11" rpy="0 0 ${M_PI}"/>
-    </xacro:generic_camera>  
-    
-    <!--
-    <xacro:include filename="$(find hector_components_description)/urdf/spinning_hokuyo_utm30lx.urdf.xacro" />
-     
-    <spinning_hokuyo_utm30lx_lidar_mount_offset_macro parent="chassis_link" name="front" angle_deg="34">
-      <origin xyz="0.0 0 0.0" rpy="0 ${45 * M_PI/180.0} 0"/>
-    </spinning_hokuyo_utm30lx_lidar_mount_offset_macro >   
-    -->
+  <xacro:property name="flipper_offset_x" value="0.205" />
+  <xacro:property name="flipper_offset_y" value="0.15" />
+  <xacro:property name="flipper_offset_z" value="0.099" />
+  
+  <xacro:property name="M_PI" value="3.14159" />
+  <xacro:property name="angle_deg" value="45" />
+  
+  <!--Required to quickly work around bug in collada_urdf (https://github.com/ros/robot_model/issues/132)-->
+  <xacro:property name="box_scale_factor" value="1.0" />
+  
+  <xacro:include filename="$(find taurob_tracker_description)/urdf/tracker_chassis.urdf.xacro.xml" />
+  
+  <xacro:tracker_chassis_macro />
+  
+  <!--Examples of adding additional robot parts below--> 
+  <xacro:include filename="$(find taurob_arm_description)/urdf/taurob_arm_collision_geoms_simple.urdf.xacro.xml" />
+  <xacro:include filename="$(find taurob_arm_description)/urdf/taurob_arm_macros.urdf.xacro.xml" />
+  
+  <xacro:taurob_arm_with_gripper_macro parent="base_link">
+    <origin xyz="0.12 0 0.185" rpy="0 0 ${M_PI/2}"/>
+  </xacro:taurob_arm_with_gripper_macro >
+  
+  <!--<xacro:include filename="$(find hector_xacro_tools)/urdf/sensor_macros.urdf.xacro"/>-->
+  <xacro:include filename="$(find hector_sensors_description)/urdf/thermaleye_camera.urdf.xacro"/>
+  <xacro:include filename="$(find hector_sensors_description)/urdf/flir_a35_camera.urdf.xacro"/>
+  <xacro:include filename="$(find hector_sensors_description)/urdf/realsense_camera.urdf.xacro"/>
+  <xacro:include filename="$(find hector_sensors_description)/urdf/generic_camera.urdf.xacro"/>
+  <xacro:include filename="$(find hector_sensors_description)/urdf/hokuyo_utm30lx.urdf.xacro" />
+  
+  <xacro:include filename="$(find hector_components_description)/urdf/vision_box_common.gazebo.xacro" />
+  <xacro:include filename="$(find hector_components_description)/urdf/vision_box_common_dimensions.urdf.xacro" />
+  <xacro:include filename="$(find hector_components_description)/urdf/vision_box_dimensions_hector2.urdf.xacro" />
+  
+  <joint name="sensor_head_yaw_joint" type="revolute">
+    <origin xyz="${0.05} -0.01 0.075" rpy="0 0 ${M_PI*-0.5}"/>
+    <parent link="arm_link_3"/>
+    <child link="sensor_head_yaw_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-M_PI*3/4}" upper="${M_PI*3/4}" effort="100" velocity="100"/>
+  </joint>
+  
+  <link name="sensor_head_yaw_link">      
+    <xacro:inertial_sphere mass="0.1" diameter="0.07"/>
+    <visual>
+      <origin xyz="0.0 0.0 ${cameraYawServo_size_z/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${cameraYawServo_size_x} ${cameraYawServo_size_y} ${cameraYawServo_size_z}"/>
+      </geometry>
+      <material name="Blue"/>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.0 ${cameraYawServo_size_z/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${cameraYawServo_size_x} ${cameraYawServo_size_y} ${cameraYawServo_size_z}"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <joint name="sensor_head_pitch_joint" type="revolute">
+    <origin xyz="0 0 ${cameraYawServo_size_z}" rpy="0 0 0"/>
+    <parent link="sensor_head_yaw_link"/>
+    <child link="sensor_head_mount_link"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="${-M_PI/2}" upper="${M_PI/2}" effort="100" velocity="100"/>
+  </joint>
+  <link name="sensor_head_mount_link">
+    <xacro:inertial_sphere mass="0.05" diameter="0.07"/>
+  </link>
+  
+  <gazebo reference="sensor_head_yaw_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>   
+  
+  <gazebo reference="sensor_head_mount_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  
+  <xacro:include filename="$(find hector_xacro_tools)/urdf/joint_macros.urdf.xacro" />
+  <xacro:joint_standard_transmission name="sensor_head_yaw_joint"/>
+  <xacro:joint_standard_transmission name="sensor_head_pitch_joint"/>
+  
+  <joint name="stab_laser_roll_joint" type="revolute">
+    <origin xyz="${-0.21} 0.1 ${0.4}" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="stab_laser_roll_link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="${-M_PI/2}" upper="${M_PI/2}" effort="100" velocity="100"/>
+  </joint>
+  
+  <link name="stab_laser_roll_link">
+    <xacro:inertial_sphere mass="0.1" diameter="0.07"/>
+    <visual>
+      <origin xyz="${laser1RollServo_size_x/2} 0.0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${laser1RollServo_size_x} ${laser1RollServo_size_y} ${laser1RollServo_size_z}"/>
+      </geometry>
+      <material name="Blue"/>
+    </visual>
+    <collision>
+      <origin xyz="${laser1RollServo_size_x/2} 0.0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${laser1RollServo_size_x} ${laser1RollServo_size_y} ${laser1RollServo_size_z}"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <joint name="stab_laser_pitch_joint" type="revolute">
+    <origin xyz="${laser1RollServo_size_x} 0 0" rpy="0 0 0"/>
+    <parent link="stab_laser_roll_link"/>
+    <child link="stab_laser_pitch_link"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="${-M_PI/2}" upper="${M_PI/2}" effort="100" velocity="100"/>
+  </joint>
+  
+  <link name="stab_laser_pitch_link">
+    <xacro:inertial_sphere mass="0.1" diameter="0.07"/>
+    <visual>
+      <origin xyz="0.0 0.0 ${laser1_size_z/2}" rpy="0 0 0"/>
+      <geometry>
+        <!--<box size="${laser1_size_x} ${laser1_size_y} ${laser1_size_z}" />-->
+        <box size="${laser1_size_x} ${laser1_size_y} 0.01"/>
+      </geometry>
+      <material name="Grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.0 ${laser1_size_z/2}" rpy="0 0 0"/>
+      <geometry>
+        <!--<box size="${laser1_size_x} ${laser1_size_y} ${laser1_size_z}" />-->
+        <box size="${laser1_size_x} ${laser1_size_y} 0.01"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <gazebo reference="stab_laser_roll_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>   
+  
+  <gazebo reference="stab_laser_pitch_joint">
+    <material>Gazebo/Grey</material>
+  </gazebo>    
+  
+  <xacro:joint_standard_transmission name="stab_laser_roll_joint"/>
+  <xacro:joint_standard_transmission name="stab_laser_pitch_joint"/>
+  
+  <joint name="structure_addon_joint" type="fixed">
+    <origin xyz="${-0.275} 0.1 ${0.3}" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="structure_addons_link"/>      
+  </joint>
+  
+  <link name="structure_addons_link">
+    <xacro:inertial_cube mass="0.1" diameter="0.07"/>
+    <visual>
+      <origin xyz="-0.0 0.0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${0.20 * box_scale_factor} ${0.1 * box_scale_factor} ${0.2 * box_scale_factor}"/>
+      </geometry>
+      <material name="Red">
+        <color rgba="0.6 0.0 0.0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0 0.0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.20 0.1 0.2"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <gazebo reference="structure_addons_link">
+    <material>Gazebo/Grey</material>
+  </gazebo> 
+  
+  <xacro:flir_a35_camera_model name="infrared" parent="sensor_head_mount_link">
+    <origin xyz="${infrared_x_position} ${infrared_y_position} ${infrared_z_position}" rpy="0 0 0"/>
+  </xacro:flir_a35_camera_model>
+  
+  <xacro:realsense_camera_model name="openni" parent="sensor_head_mount_link">
+    <origin xyz="${kinect_x_position} ${kinect_y_position}  ${0.035}" rpy="${kinect_roll_position} ${kinect_pitch_position} ${kinect_yaw_position}"/>
+  </xacro:realsense_camera_model>
+  
+  <xacro:hokuyo_utm30lx name="stab_laser" parent="stab_laser_pitch_link" ros_topic="/stab_laser/scan_gazebo" update_rate="40" ray_count="1081" min_angle="135" max_angle="-135">
+    <origin xyz="${laser1_center_x_offset} 0 ${laser1_plane_height}" rpy="0 0 0"/>
+  </xacro:hokuyo_utm30lx>
+  
+  <!-- <xacro:vision_box_common_gazebo_plugins/> -->
+  
+  <xacro:include filename="$(find hector_tracker_description)/urdf/tracker_spinning_lidar_mount.urdf.xacro.xml" />
+  
+  <xacro:tracker_spinning_lidar_mount_macro parent="base_link"  name="spin_lidar" scaling="0.001">
+    <origin xyz="-0.3 0.1 0.55" rpy="0.0 ${-M_PI*0.5} 0.0"/>
+    <origin xyz="0 0.0 0.0" rpy="0.0 ${M_PI*0.75} 0.0"/>
+  </xacro:tracker_spinning_lidar_mount_macro>
+  
+  <xacro:generic_camera name="front_chassis_cam" parent="base_link" ros_topic="image_raw" cam_info_topic="camera_info" update_rate="10" res_x="640" res_y="480" image_format="R8G8B8" hfov="120">
+    <origin xyz="${0.1+0.122} 0.0 0.11" rpy="0 0 0"/>
+  </xacro:generic_camera>
+  
+  <xacro:generic_camera name="rear_chassis_cam" parent="base_link" ros_topic="image_raw" cam_info_topic="camera_info" update_rate="10" res_x="640" res_y="480" image_format="R8G8B8" hfov="120">
+    <origin xyz="${-0.59+0.122} 0.0 0.11" rpy="0 0 ${M_PI}"/>
+  </xacro:generic_camera>  
+  
+  <!--
+  <xacro:include filename="$(find hector_components_description)/urdf/spinning_hokuyo_utm30lx.urdf.xacro" />
+  
+  <spinning_hokuyo_utm30lx_lidar_mount_offset_macro parent="chassis_link" name="front" angle_deg="34">
+  <origin xyz="0.0 0 0.0" rpy="0 ${45 * M_PI/180.0} 0"/>
+  </spinning_hokuyo_utm30lx_lidar_mount_offset_macro >   
+  -->
 </robot>
