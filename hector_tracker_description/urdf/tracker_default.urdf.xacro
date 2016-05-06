@@ -176,12 +176,12 @@
     <material>Gazebo/Grey</material>
   </gazebo> 
   
-  <xacro:flir_a35_camera name="arm_thermal" parent="sensor_head_mount_link">
+  <xacro:flir_a35_camera name="arm_thermal_cam" parent="sensor_head_mount_link">
     <origin xyz="${infrared_x_position} ${infrared_y_position} ${infrared_z_position}" rpy="0 0 0"/>
   </xacro:flir_a35_camera>
   
   
-  <xacro:realsense_camera name="arm_rgbd" parent="sensor_head_mount_link">
+  <xacro:realsense_camera name="arm_rgbd_cam" parent="sensor_head_mount_link">
     <origin xyz="${kinect_x_position} ${kinect_y_position}  ${0.035}" rpy="${kinect_roll_position} ${kinect_pitch_position} ${kinect_yaw_position}"/>
   </xacro:realsense_camera>
   
