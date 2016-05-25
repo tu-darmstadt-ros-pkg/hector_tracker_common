@@ -21,9 +21,9 @@
   <xacro:include filename="$(find taurob_arm_description)/urdf/taurob_arm_collision_geoms_simple.urdf.xacro.xml" />
   <xacro:include filename="$(find taurob_arm_description)/urdf/taurob_arm_macros.urdf.xacro.xml" />
   
-  <xacro:taurob_arm_with_active_gripper_macro parent="base_link">
+  <xacro:taurob_arm_with_gripper_macro parent="base_link">
     <origin xyz="0.12 0 0.185" rpy="0 0 ${M_PI/2}"/>
-  </xacro:taurob_arm_with_active_gripper_macro >
+  </xacro:taurob_arm_with_gripper_macro >
   
   <!--<xacro:include filename="$(find hector_xacro_tools)/urdf/sensor_macros.urdf.xacro"/>-->
   <xacro:include filename="$(find hector_sensors_description)/urdf/thermaleye_camera.urdf.xacro"/>
