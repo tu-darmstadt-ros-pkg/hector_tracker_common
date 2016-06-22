@@ -84,6 +84,15 @@
   <xacro:joint_standard_transmission name="sensor_head_yaw_joint"/>
   <xacro:joint_standard_transmission name="sensor_head_pitch_joint"/>
   
+  <gazebo>
+    <!-- ros_control plugin -->
+    <plugin name="gazebo_ros_control_select_joints" filename="libgazebo_ros_control_select_joints.so">
+      <robotNamespace>sensor_head_control</robotNamespace>
+      <joints>sensor_head_yaw_joint sensor_head_pitch_joint</joints>
+    </plugin>
+  </gazebo>
+  
+  
   <joint name="stab_laser_roll_joint" type="revolute">
     <origin xyz="${-0.26} 0.1 ${0.43}" rpy="0 0 0"/>
     <parent link="base_link"/>
@@ -147,6 +156,15 @@
   <xacro:joint_standard_transmission name="stab_laser_roll_joint"/>
   <xacro:joint_standard_transmission name="stab_laser_pitch_joint"/>
   
+  <gazebo>
+    <!-- ros_control plugin -->
+    <plugin name="gazebo_ros_control_select_joints" filename="libgazebo_ros_control_select_joints.so">
+      <robotNamespace>stab_laser_control</robotNamespace>
+      <joints>stab_laser_roll_joint stab_laser_pitch_joint</joints>
+    </plugin>
+  </gazebo>
+  
+  
   <joint name="structure_addon_joint" type="fixed">
     <origin xyz="${-0.275} 0.1 ${0.3}" rpy="0 0 0"/>
     <parent link="base_link"/>
@@ -197,6 +215,15 @@
     <origin xyz="-0.3 0.1 0.58" rpy="0.0 ${-M_PI*0.5} 0.0"/>
     <origin xyz="0 0.0 0.0" rpy="0.0 ${M_PI*0.75} 0.0"/>
   </xacro:tracker_spinning_lidar_mount_macro>
+  
+  <gazebo>
+    <!-- ros_control plugin -->
+    <plugin name="gazebo_ros_control_select_joints" filename="libgazebo_ros_control_select_joints.so">
+      <robotNamespace>spin_lidar_control</robotNamespace>
+      <joints>spin_lidar_spin_joint</joints>
+    </plugin>
+  </gazebo>
+  
   
   <xacro:generic_camera name="front_chassis_cam" parent="base_link" ros_topic="image_raw" cam_info_topic="camera_info" update_rate="10" res_x="640" res_y="480" image_format="R8G8B8" hfov="120">
     <origin xyz="${0.1+0.122} 0.0 0.11" rpy="0 0 0"/>
