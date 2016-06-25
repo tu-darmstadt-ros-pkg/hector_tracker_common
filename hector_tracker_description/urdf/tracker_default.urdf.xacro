@@ -92,7 +92,7 @@
     </plugin>
   </gazebo>
   
-  
+  <!--
   <joint name="stab_laser_roll_joint" type="revolute">
     <origin xyz="${-0.26} 0.1 ${0.43}" rpy="0 0 0"/>
     <parent link="base_link"/>
@@ -131,7 +131,7 @@
     <visual>
       <origin xyz="0.0 0.0 ${laser1_size_z/2}" rpy="0 0 0"/>
       <geometry>
-        <!--<box size="${laser1_size_x} ${laser1_size_y} ${laser1_size_z}" />-->
+        <!+-<box size="${laser1_size_x} ${laser1_size_y} ${laser1_size_z}" /> ->
         <box size="${laser1_size_x} ${laser1_size_y} 0.01"/>
       </geometry>
       <material name="Grey"/>
@@ -139,7 +139,7 @@
     <collision>
       <origin xyz="0.0 0.0 ${laser1_size_z/2}" rpy="0 0 0"/>
       <geometry>
-        <!--<box size="${laser1_size_x} ${laser1_size_y} ${laser1_size_z}" />-->
+        <!+-<box size="${laser1_size_x} ${laser1_size_y} ${laser1_size_z}" />->
         <box size="${laser1_size_x} ${laser1_size_y} 0.01"/>
       </geometry>
     </collision>
@@ -155,6 +155,12 @@
   
   <xacro:joint_standard_transmission name="stab_laser_roll_joint"/>
   <xacro:joint_standard_transmission name="stab_laser_pitch_joint"/>
+  
+  <xacro:hokuyo_utm30lx name="stab_laser" parent="stab_laser_pitch_link" ros_topic="/stab_laser/scan_gazebo" update_rate="40" ray_count="1081" min_angle="135" max_angle="-135">
+    <origin xyz="${laser1_center_x_offset} 0 ${laser1_plane_height}" rpy="0 0 0"/>
+  </xacro:hokuyo_utm30lx>
+
+  -->
   
   <gazebo>
     <!-- ros_control plugin -->
@@ -202,11 +208,7 @@
   <xacro:realsense_camera name="arm_rgbd_cam" parent="sensor_head_mount_link">
     <origin xyz="${kinect_x_position} ${kinect_y_position}  ${0.035}" rpy="${kinect_roll_position} ${kinect_pitch_position} ${kinect_yaw_position}"/>
   </xacro:realsense_camera>
-  
-  <xacro:hokuyo_utm30lx name="stab_laser" parent="stab_laser_pitch_link" ros_topic="/stab_laser/scan_gazebo" update_rate="40" ray_count="1081" min_angle="135" max_angle="-135">
-    <origin xyz="${laser1_center_x_offset} 0 ${laser1_plane_height}" rpy="0 0 0"/>
-  </xacro:hokuyo_utm30lx>
-  
+    
   <!-- <xacro:vision_box_common_gazebo_plugins/> -->
   
   <xacro:include filename="$(find hector_tracker_description)/urdf/tracker_spinning_lidar_mount.urdf.xacro.xml" />
