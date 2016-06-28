@@ -37,7 +37,7 @@
   <xacro:include filename="$(find hector_components_description)/urdf/vision_box_dimensions_hector2.urdf.xacro" />
   
   <joint name="sensor_head_yaw_joint" type="revolute">
-    <origin xyz="-0.01 ${0.04} 0.075" rpy="0 0 0"/>
+    <origin xyz="-0.03 ${0.0565} 0.089" rpy="0 0 0"/>
     <parent link="arm_link_3"/>
     <child link="sensor_head_yaw_link"/>
     <axis xyz="0 0 1"/>
@@ -62,10 +62,10 @@
   </link>
   
   <joint name="sensor_head_pitch_joint" type="revolute">
-    <origin xyz="0 0 ${cameraYawServo_size_z}" rpy="0 0 0"/>
+    <origin xyz="0 -0.0235 0.0921" rpy="${-M_PI/2} 0 0"/>
     <parent link="sensor_head_yaw_link"/>
     <child link="sensor_head_mount_link"/>
-    <axis xyz="0 1 0"/>
+    <axis xyz="0 0 1"/>
     <limit lower="${-M_PI/2}" upper="${M_PI/2}" effort="100" velocity="100"/>
   </joint>
   <link name="sensor_head_mount_link">
@@ -239,12 +239,13 @@
   </gazebo> 
   
   <xacro:flir_a35_camera name="arm_thermal_cam" parent="sensor_head_mount_link">
-    <origin xyz="${infrared_x_position} ${infrared_y_position} ${infrared_z_position}" rpy="0 0 0"/>
+    <!--origin xyz="${infrared_x_position} ${infrared_y_position} ${infrared_z_position}" rpy="0 0 0"/-->
+    <origin xyz="0.0345 0.0 -0.03106" rpy="0 0 0"/>
   </xacro:flir_a35_camera>
   
   
   <xacro:realsense_camera name="arm_rgbd_cam" parent="sensor_head_mount_link">
-    <origin xyz="${kinect_x_position} ${kinect_y_position}  ${0.035}" rpy="${kinect_roll_position} ${kinect_pitch_position} ${kinect_yaw_position}"/>
+    <origin xyz="0.01 -0.048  0.01373" rpy="${M_PI*0.5} ${kinect_pitch_position} ${kinect_yaw_position}"/>
   </xacro:realsense_camera>
     
   <!-- <xacro:vision_box_common_gazebo_plugins/> -->
