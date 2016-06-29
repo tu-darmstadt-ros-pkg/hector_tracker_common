@@ -257,7 +257,7 @@
   
   
   <xacro:realsense_camera name="arm_rgbd_cam" parent="sensor_head_mount_link">
-    <origin xyz="0.01 -0.048  0.01373" rpy="${M_PI*0.5} ${kinect_pitch_position} ${kinect_yaw_position}"/>
+    <origin xyz="0.01 -0.048  ${0.01373-0.051}" rpy="${M_PI*0.5} ${kinect_pitch_position} ${kinect_yaw_position}"/>
   </xacro:realsense_camera>
     
   <!-- <xacro:vision_box_common_gazebo_plugins/> -->
