@@ -213,15 +213,15 @@
     
     <!--Middle box-->
     <visual>
-      <origin xyz="${-0.34} 0.115 ${0.115+0.25*0.5}" rpy="0 0 0"/>
+      <origin xyz="${-0.34} 0.115 ${0.215+0.25*0.5}" rpy="0 0 0"/>
       <geometry>
-        <box size="${0.43-0.25} 0.15 0.25"/>
+        <box size="${0.43-0.25} 0.15 0.45"/>
       </geometry>
     </visual>
     <collision>
-      <origin xyz="${-0.34} 0.115 ${0.115+0.25*0.5}" rpy="0 0 0"/>
+      <origin xyz="${-0.34} 0.115 ${0.215+0.25*0.5}" rpy="0 0 0"/>
       <geometry>
-        <box size="${0.43-0.25} 0.15 0.25"/>
+        <box size="${0.43-0.25} 0.15 0.45"/>
       </geometry>
     </collision>  
     <!--
