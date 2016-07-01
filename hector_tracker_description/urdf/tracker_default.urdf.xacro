@@ -92,10 +92,10 @@
     </plugin>
   </gazebo>
   
-  <!--
+  
   <joint name="stab_laser_roll_joint" type="revolute">
-    <origin xyz="${-0.26} 0.1 ${0.43}" rpy="0 0 0"/>
-    <parent link="base_link"/>
+    <origin xyz="${-0.007} -0.046 ${0.078}" rpy="0 0 ${-M_PI/2}"/>
+    <parent link="arm_link_0"/>
     <child link="stab_laser_roll_link"/>
     <axis xyz="1 0 0"/>
     <limit lower="${-M_PI/2}" upper="${M_PI/2}" effort="100" velocity="100"/>
@@ -131,7 +131,7 @@
     <visual>
       <origin xyz="0.0 0.0 ${laser1_size_z/2}" rpy="0 0 0"/>
       <geometry>
-        <!+-<box size="${laser1_size_x} ${laser1_size_y} ${laser1_size_z}" /> ->
+        <!--<box size="${laser1_size_x} ${laser1_size_y} ${laser1_size_z}" /> -->
         <box size="${laser1_size_x} ${laser1_size_y} 0.01"/>
       </geometry>
       <material name="Grey"/>
@@ -139,7 +139,7 @@
     <collision>
       <origin xyz="0.0 0.0 ${laser1_size_z/2}" rpy="0 0 0"/>
       <geometry>
-        <!+-<box size="${laser1_size_x} ${laser1_size_y} ${laser1_size_z}" />->
+        <!--<box size="${laser1_size_x} ${laser1_size_y} ${laser1_size_z}" />-->
         <box size="${laser1_size_x} ${laser1_size_y} 0.01"/>
       </geometry>
     </collision>
@@ -160,7 +160,7 @@
     <origin xyz="${laser1_center_x_offset} 0 ${laser1_plane_height}" rpy="0 0 0"/>
   </xacro:hokuyo_utm30lx>
 
-  -->
+  
   
   <gazebo>
     <!-- ros_control plugin -->
