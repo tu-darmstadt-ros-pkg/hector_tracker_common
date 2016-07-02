@@ -265,7 +265,7 @@
   <xacro:include filename="$(find hector_tracker_description)/urdf/tracker_spinning_lidar_mount.urdf.xacro.xml" />
   
   <xacro:tracker_spinning_lidar_mount_macro parent="base_link"  name="spin_lidar" scaling="0.001">
-    <origin xyz="-0.285 0.14 0.627" rpy="0.05 ${-M_PI*0.485} ${M_PI-0.75}"/>
+    <origin xyz="-0.285 0.14 0.627" rpy="0.05 ${-M_PI*0.485} ${M_PI-1.2}"/>
     <origin xyz="-0.025 0.0 0.0" rpy="0.0 ${M_PI*0.75} 0.0"/>
   </xacro:tracker_spinning_lidar_mount_macro>
   
@@ -279,11 +279,11 @@
   
   
   
-    <xacro:generic_camera name="pseye_left_cam" parent="base_link" ros_topic="image_raw" cam_info_topic="camera_info" update_rate="10" res_x="640" res_y="480" image_format="R8G8B8" hfov="120">
+    <xacro:generic_camera name="left" parent="base_link" ros_topic="image_mono" cam_info_topic="camera_info" update_rate="10" res_x="640" res_y="480" image_format="L8" hfov="120">
     <origin xyz="${-0.285-0.17} ${0.14+0.05} ${0.627-0.11}" rpy="0 0 2.35619"/>
   </xacro:generic_camera>  
   
-  <xacro:generic_camera name="pseye_right_cam" parent="base_link" ros_topic="image_raw" cam_info_topic="camera_info" update_rate="10" res_x="640" res_y="480" image_format="R8G8B8" hfov="120">
+  <xacro:generic_camera name="right" parent="base_link" ros_topic="image_mono" cam_info_topic="camera_info" update_rate="10" res_x="640" res_y="480" image_format="L8" hfov="120">
     <origin xyz="${-0.285-0.17} ${0.14-0.05} ${0.627-0.11}" rpy="0 0 -2.35619"/>
   </xacro:generic_camera> -->
   
