@@ -265,7 +265,7 @@
   <xacro:include filename="$(find hector_tracker_description)/urdf/tracker_spinning_lidar_mount.urdf.xacro.xml" />
   
   <xacro:tracker_spinning_lidar_mount_macro parent="base_link"  name="spin_lidar" scaling="0.001">
-    <origin xyz="-0.285 0.14 0.627" rpy="0.05 ${-M_PI*0.485} ${M_PI-1.2}"/>
+    <origin xyz="-0.285 0.14 0.627" rpy="0.05 ${-M_PI*0.485} ${M_PI-0.9}"/>
     <origin xyz="-0.025 0.0 0.0" rpy="0.0 ${M_PI*0.75} 0.0"/>
   </xacro:tracker_spinning_lidar_mount_macro>
   
