@@ -250,6 +250,44 @@
     <material>Gazebo/Grey</material>
   </gazebo> 
   
+  
+    <!-- TODO: Same note as applies to imu_link -->
+  <link name="navsat_link">
+    <!--
+    <visual>
+      <geometry>
+        <cylinder radius="0.026" length="0.016" />
+      </geometry>
+      <origin xyz="0 0 0.008" />
+      <material name="black" />
+    </visual>
+    -->
+  </link>
+  
+  <joint name="navsat_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="navsat_link" />
+    <origin xyz="${-0.35.5} 0.115 ${0.68}" rpy="0 0 0"/>
+  </joint>
+  
+  <gazebo>
+    <plugin name="gps_controller" filename="libhector_gazebo_ros_gps.so">
+      <updateRate>5</updateRate>
+      <robotNamespace>/</robotNamespace>
+      <bodyName>navsat_link</bodyName>
+      <frameId>base_link</frameId>
+      <topicName>/navsat/fix</topicName>
+      <velocityTopicName>/navsat/vel</velocityTopicName>
+      <referenceLatitude>49.9</referenceLatitude>
+      <referenceLongitude>8.9</referenceLongitude>
+      <referenceHeading>0</referenceHeading>
+      <referenceAltitude>0</referenceAltitude>
+      <drift>0.0001 0.0001 0.0001</drift>
+    </plugin>
+  </gazebo>
+  
+  
+  
   <xacro:flir_a35_camera name="arm_thermal_cam" parent="sensor_head_mount_link">
     <!--origin xyz="${infrared_x_position} ${infrared_y_position} ${infrared_z_position}" rpy="0 0 0"/-->
     <origin xyz="0.0345 0.0 -0.03106" rpy="0 0 0"/>
