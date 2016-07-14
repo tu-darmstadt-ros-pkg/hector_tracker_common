@@ -290,7 +290,7 @@
   
   <xacro:flir_a35_camera name="arm_thermal_cam" parent="sensor_head_mount_link">
     <!--origin xyz="${infrared_x_position} ${infrared_y_position} ${infrared_z_position}" rpy="0 0 0"/-->
-    <origin xyz="0.0345 0.0 -0.03106" rpy="0 0 0"/>
+    <origin xyz="0.0345 0.0 -0.03106" rpy="${M_PI*0.5} 0 0"/>
   </xacro:flir_a35_camera>
   
   
