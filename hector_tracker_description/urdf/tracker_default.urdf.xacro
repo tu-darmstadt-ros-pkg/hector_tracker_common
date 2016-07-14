@@ -317,7 +317,7 @@
   
   
   
-    <xacro:generic_camera name="left" parent="base_link" ros_topic="image_mono" cam_info_topic="camera_info" update_rate="10" res_x="640" res_y="480" image_format="L8" hfov="120">
+  <xacro:generic_camera name="left" parent="base_link" ros_topic="image_mono" cam_info_topic="camera_info" update_rate="10" res_x="640" res_y="480" image_format="L8" hfov="120">
     <origin xyz="${-0.285-0.17} ${0.14+0.05} ${0.627-0.11}" rpy="0 0 2.35619"/>
   </xacro:generic_camera>  
   
