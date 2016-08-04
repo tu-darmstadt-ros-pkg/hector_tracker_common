@@ -197,7 +197,7 @@
     </collision>
     -->
     <!--Lowest box-->
-    <visual>
+<!--    <visual>
       <origin xyz="${-0.29.5} 0.115 ${0.115/2}" rpy="0 0 0"/>
       <geometry>
         <box size="${0.43-0.16} 0.15 0.115"/>
@@ -208,11 +208,11 @@
       <geometry>
         <box size="${0.43-0.16} 0.15 0.115"/>
       </geometry>
-    </collision>
+    </collision>-->
     
     
     <!--Middle box-->
-    <visual>
+<!--    <visual>
       <origin xyz="${-0.34} 0.115 ${0.215+0.25*0.5}" rpy="0 0 0"/>
       <geometry>
         <box size="${0.43-0.25} 0.15 0.45"/>
@@ -223,7 +223,7 @@
       <geometry>
         <box size="${0.43-0.25} 0.15 0.45"/>
       </geometry>
-    </collision>  
+    </collision>  -->
     <!--
     40.8 from ref point to back of alum. frame - 12.3 (11.7 to 12.9 rotation shaft)
     27.6 to top of alum. platform + 16.6 for lidar center
@@ -304,7 +304,9 @@
   
   <xacro:tracker_spinning_lidar_mount_macro parent="base_link"  name="spin_lidar" scaling="0.001">
     <origin xyz="-0.285 0.14 0.627" rpy="0.05 ${-M_PI*0.485} ${M_PI-0.9}"/>
-    <origin xyz="-0.025 0.0 0.0" rpy="0.0 ${M_PI*0.75} 0.0"/>
+    <!--<origin xyz="0.095 0.0 0.0225" rpy="0.0 ${M_PI*0.75} 0.0"/>-->
+    <origin xyz="0.075 0.0 0.0225" rpy="${M_PI*0.5} 0.0 ${M_PI*0.75}"/>
+    <origin xyz="-0.025 0.0 -0.0225" rpy="0.0 ${M_PI*1} ${-M_PI*0.5}"/>
   </xacro:tracker_spinning_lidar_mount_macro>
   
   <gazebo>
