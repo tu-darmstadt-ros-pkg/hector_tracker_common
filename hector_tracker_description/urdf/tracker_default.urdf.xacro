@@ -3,10 +3,6 @@
 <robot name="taurob_tracker"
        xmlns:xacro="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
   
-  <xacro:property name="flipper_offset_x" value="0.205" />
-  <xacro:property name="flipper_offset_y" value="0.15" />
-  <xacro:property name="flipper_offset_z" value="0.099" />
-  
   <xacro:property name="M_PI" value="3.14159" />
   <xacro:property name="angle_deg" value="45" />
   
@@ -305,7 +301,7 @@
   <xacro:tracker_spinning_lidar_mount_macro parent="base_link"  name="spin_lidar" scaling="0.001">
     <origin xyz="-0.285 0.14 0.627" rpy="0.05 ${-M_PI*0.485} ${M_PI-0.9}"/>
     <!--<origin xyz="0.095 0.0 0.0225" rpy="0.0 ${M_PI*0.75} 0.0"/>-->
-    <origin xyz="0.075 0.0 0.0225" rpy="${M_PI*0.5} 0.0 ${M_PI*0.75}"/>
+    <origin xyz="0.075 0.0 0.0225" rpy="${M_PI*0.5} 0.0 ${M_PI*1}"/>
     <origin xyz="-0.025 0.0 -0.0225" rpy="0.0 ${M_PI*1} ${-M_PI*0.5}"/>
   </xacro:tracker_spinning_lidar_mount_macro>
   
