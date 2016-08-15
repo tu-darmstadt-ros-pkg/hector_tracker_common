@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  
+  <xacro:include filename="$(find hector_xacro_tools)/urdf/inertia_tensors.urdf.xacro"/>
+  <xacro:include filename="$(find hector_sensors_description)/urdf/hokuyo_utm30lx.urdf.xacro" />
+  <xacro:include filename="$(find hector_xacro_tools)/urdf/joint_macros.urdf.xacro" />
+      
+  <xacro:macro name="tracker_stab_laser_macro">  
+    
+    <joint name="stab_laser_roll_joint" type="revolute">
+    <origin xyz="${-0.007} -0.046 ${0.078}" rpy="0 0 ${-M_PI/2}"/>
+    <parent link="arm_link_0"/>
+    <child link="stab_laser_roll_link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="${-M_PI/2}" upper="${M_PI/2}" effort="100" velocity="100"/>
+  </joint>
+  
+  <link name="stab_laser_roll_link">
+    <xacro:inertial_sphere mass="0.1" diameter="0.07"/>
+    <visual>
+      <origin xyz="${laser1RollServo_size_x/2} 0.0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${laser1RollServo_size_x} ${laser1RollServo_size_y} ${laser1RollServo_size_z}"/>
+      </geometry>
+      <material name="Blue"/>
+    </visual>
+    <collision>
+      <origin xyz="${laser1RollServo_size_x/2} 0.0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${laser1RollServo_size_x} ${laser1RollServo_size_y} ${laser1RollServo_size_z}"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <joint name="stab_laser_pitch_joint" type="revolute">
+    <origin xyz="${laser1RollServo_size_x} 0 0" rpy="0 0 0"/>
+    <parent link="stab_laser_roll_link"/>
+    <child link="stab_laser_pitch_link"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="${-M_PI/2}" upper="${M_PI/2}" effort="100" velocity="100"/>
+  </joint>
+  
+  <link name="stab_laser_pitch_link">
+    <xacro:inertial_sphere mass="0.1" diameter="0.07"/>
+    <visual>
+      <origin xyz="0.0 0.0 ${laser1_size_z/2}" rpy="0 0 0"/>
+      <geometry>
+        <!--<box size="${laser1_size_x} ${laser1_size_y} ${laser1_size_z}" /> -->
+        <box size="${laser1_size_x} ${laser1_size_y} 0.01"/>
+      </geometry>
+      <material name="Grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.0 ${laser1_size_z/2}" rpy="0 0 0"/>
+      <geometry>
+        <!--<box size="${laser1_size_x} ${laser1_size_y} ${laser1_size_z}" />-->
+        <box size="${laser1_size_x} ${laser1_size_y} 0.01"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <gazebo reference="stab_laser_roll_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>   
+  
+  <gazebo reference="stab_laser_pitch_joint">
+    <material>Gazebo/Grey</material>
+  </gazebo>    
+  
+  <xacro:joint_standard_transmission name="stab_laser_roll_joint"/>
+  <xacro:joint_standard_transmission name="stab_laser_pitch_joint"/>
+  
+  <xacro:hokuyo_utm30lx name="stab_laser" parent="stab_laser_pitch_link" ros_topic="/stab_laser/scan_gazebo" update_rate="40" ray_count="1081" min_angle="135" max_angle="-135">
+    <origin xyz="${laser1_center_x_offset} 0 ${laser1_plane_height}" rpy="0 0 0"/>
+  </xacro:hokuyo_utm30lx>
+
+  
+  
+  <gazebo>
+    <!-- ros_control plugin -->
+    <plugin name="gazebo_ros_control_select_joints" filename="libgazebo_ros_control_select_joints.so">
+      <robotNamespace>stab_laser_control</robotNamespace>
+      <joints>stab_laser_roll_joint stab_laser_pitch_joint</joints>
+    </plugin>
+  </gazebo>
+    
+  </xacro:macro>
+</robot>

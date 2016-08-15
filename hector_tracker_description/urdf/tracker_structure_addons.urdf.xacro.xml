@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<robot
+  xmlns:xacro="http://www.ros.org/wiki/xacro" name="hector_multisensor_head">
+  <xacro:include filename="$(find hector_xacro_tools)/urdf/inertia_tensors.urdf.xacro"/>
+  <xacro:include filename="$(find hector_sensors_description)/urdf/hokuyo_utm30lx.urdf.xacro" />
+  <xacro:include filename="$(find hector_tracker_description)/urdf/tracker_spinning_lidar_mount.urdf.xacro.xml" />  
+  
+  <xacro:property name="M_PI" value="3.14159265359"/>
+  
+  <xacro:macro name="tracker_structure_addons_macro">
+    <joint name="structure_addon_joint" type="fixed">
+      <origin xyz="0 0 ${0.185}" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="structure_addons_link"/>      
+    </joint>
+    
+    <link name="structure_addons_link">
+      <xacro:inertial_cube mass="0.1" diameter="0.07"/>
+      <!--<visual>
+      <origin xyz="-0.0 0.0 0.0" rpy="0 0 0"/>
+      <geometry>
+      <box size="${0.20 * box_scale_factor} ${0.1 * box_scale_factor} ${0.2 * box_scale_factor}"/>
+      </geometry>
+      <material name="Red">
+      <color rgba="0.6 0.0 0.0 1"/>
+      </material>
+      </visual>
+      
+      <collision>
+      <origin xyz="-0.0 0.0 0.0" rpy="0 0 0"/>
+      <geometry>
+      <box size="0.20 0.1 0.2"/>
+      </geometry>
+      </collision>
+      -->
+      <!--Lowest box-->
+      <visual>
+        <origin xyz="${-0.29.5} 0.115 ${0.115/2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${0.43-0.16} 0.15 0.115"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="${-0.29.5} 0.115 ${0.115/2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${0.43-0.16} 0.15 0.115"/>
+        </geometry>
+      </collision>
+      
+      
+      <!--Middle box-->
+      <visual>
+        <origin xyz="${-0.34} 0.115 ${0.215+0.25*0.5}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${0.43-0.25} 0.15 0.45"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="${-0.34} 0.115 ${0.215+0.25*0.5}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${0.43-0.25} 0.15 0.45"/>
+        </geometry>
+      </collision>  
+      <!--
+      40.8 from ref point to back of alum. frame - 12.3 (11.7 to 12.9 rotation shaft)
+      27.6 to top of alum. platform + 16.6 for lidar center
+      -->
+      
+      
+      
+      <!--Antenna-->
+      <visual>
+        <origin xyz="${-0.38} -0.175 0.11" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.015" length="0.22" />
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="${-0.38} -0.175 0.11" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0175" length="0.22" />
+        </geometry>
+      </collision>
+    </link>
+    
+    <gazebo reference="structure_addons_link">
+      <material>Gazebo/Grey</material>
+    </gazebo> 
+    
+    
+    <!-- TODO: Same note as applies to imu_link -->
+    <link name="navsat_link">
+      <!--
+      <visual>
+      <geometry>
+      <cylinder radius="0.026" length="0.016" />
+      </geometry>
+      <origin xyz="0 0 0.008" />
+      <material name="black" />
+      </visual>
+      -->
+    </link>
+    
+    <joint name="navsat_joint" type="fixed">
+      <parent link="base_link" />
+      <child link="navsat_link" />
+      <origin xyz="${-0.35.5} 0.115 ${0.68}" rpy="0 0 0"/>
+    </joint>
+    
+    <gazebo>
+      <plugin name="gps_controller" filename="libhector_gazebo_ros_gps.so">
+        <updateRate>5</updateRate>
+        <robotNamespace>/</robotNamespace>
+        <bodyName>navsat_link</bodyName>
+        <frameId>navsat_link</frameId>
+        <topicName>/gps/fix</topicName>
+        <velocityTopicName>/gps/vel</velocityTopicName>
+        <referenceLatitude>50.396144</referenceLatitude>
+        <referenceLongitude>8.546144</referenceLongitude>
+        <referenceHeading>0</referenceHeading>
+        <referenceAltitude>0</referenceAltitude>
+        <drift>0.0001 0.0001 0.0001</drift>
+      </plugin>
+    </gazebo>
+    
+    
+    <!-- <xacro:vision_box_common_gazebo_plugins/> -->     
+    <xacro:tracker_spinning_lidar_mount_macro parent="base_link"  name="spin_lidar" scaling="0.001">
+      <origin xyz="-0.285 0.14 0.627" rpy="0.05 ${-M_PI*0.485} ${M_PI-0.9}"/>
+      <origin xyz="-0.025 0.0 0.0" rpy="0.0 ${M_PI*0.75} 0.0"/>
+    </xacro:tracker_spinning_lidar_mount_macro>
+    
+    <gazebo>
+      <!-- ros_control plugin -->
+      <plugin name="gazebo_ros_control_select_joints" filename="libgazebo_ros_control_select_joints.so">
+        <robotNamespace>spin_lidar_control</robotNamespace>
+        <joints>spin_lidar_spin_joint</joints>
+      </plugin>
+    </gazebo>
+    
+  </xacro:macro>
+</robot>
