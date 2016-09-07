@@ -22,7 +22,7 @@
   </xacro:taurob_arm_with_gripper_macro >
   
   <!-- ar tags -->
-  <xacro:include filename="$(find vigir_ar_alvar_description)/urdf/artag.urdf.xacro" />
+  <xacro:include filename="$(find hector_chilitag_description)/urdf/chilitag.urdf.xacro" />
   
   <xacro:artag name="chilitag1" parent="base_link">
     <origin xyz="-0.3 -0.07 0.2" rpy="0 0 0" />
