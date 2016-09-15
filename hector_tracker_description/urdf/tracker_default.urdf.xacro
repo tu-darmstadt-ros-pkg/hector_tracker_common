@@ -23,13 +23,13 @@
   
   <!-- ar tags -->
   <xacro:include filename="$(find hector_chilitag_description)/urdf/chilitag.urdf.xacro" />
+
+  <xacro:artag name="chilitag0" parent="base_link">
+    <origin xyz="-0.071 -0.02 0.185" rpy="0 0 ${M_PI}" />
+  </xacro:artag>
   
   <xacro:artag name="chilitag1" parent="base_link">
     <origin xyz="-0.02 0.12 0.185" rpy="0 0 ${M_PI}" />
-  </xacro:artag>
-  
-  <xacro:artag name="chilitag0" parent="base_link">
-    <origin xyz="-0.071 -0.02 0.185" rpy="0 0 ${M_PI}" />
   </xacro:artag>
   
   <!--<xacro:artag name="chilitag3" parent="base_link">
