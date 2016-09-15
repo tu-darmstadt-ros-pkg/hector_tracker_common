@@ -41,7 +41,7 @@
   </xacro:generic_camera>
   -->
 
-  <xacro:generic_camera name="gripper_cam" parent="arm_link_4" ros_topic="image_raw" cam_info_topic="camera_info" update_rate="10" res_x="640" res_y="480" image_format="R8G8B8" hfov="80">
+  <xacro:generic_camera name="arm_gripper_cam" parent="arm_link_4" ros_topic="image_raw" cam_info_topic="camera_info" update_rate="10" res_x="640" res_y="480" image_format="R8G8B8" hfov="80">
     <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
   </xacro:generic_camera>    
   
