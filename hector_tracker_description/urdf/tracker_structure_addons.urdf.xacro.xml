@@ -128,7 +128,7 @@
     
     <!-- <xacro:vision_box_common_gazebo_plugins/> -->     
     <xacro:tracker_spinning_lidar_mount_macro parent="base_link"  name="spin_lidar" scaling="0.001">
-      <origin xyz="-0.285 0.14 0.627" rpy="0.1 ${-M_PI*0.502} ${M_PI-0.9}"/>
+      <origin xyz="-0.245 0.15 0.647" rpy="0.1 ${-M_PI*0.502} ${M_PI-0.5}"/>
       <xacro:include filename="$(find hector_tracker_description)/calibrations/spinning_lidar_calibration.urdf.xacro"/>
     </xacro:tracker_spinning_lidar_mount_macro>
     
