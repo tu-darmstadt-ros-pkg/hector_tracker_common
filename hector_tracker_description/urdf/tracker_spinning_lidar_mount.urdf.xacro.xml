@@ -27,6 +27,17 @@
         </geometry>
       </visual>
     </link>-->
+    <joint name="${name}_spin_joint_fixed" type="fixed">
+      <!--<origin xyz="0.061 0.0 0.134" rpy="0 0 0"/>-->
+      <xacro:insert_block name="origin"/>
+      <parent link="${parent}" />
+      <child link="${name}_lidar_mount_link_fixed"/>
+      <axis xyz="1 0 0" rpy="0 0 0"/>
+    </joint>
+    
+    <link name="${name}_lidar_mount_link_fixed">
+    </link>
+    
     <joint name="${name}_spin_joint" type="continuous">
       <!--<origin xyz="0.061 0.0 0.134" rpy="0 0 0"/>-->
       <xacro:insert_block name="origin"/>
