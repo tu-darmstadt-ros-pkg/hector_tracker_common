@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <robot name="taurob_tracker"
-       xmlns:xacro="http://www.ros.org/wiki/xacro">
+       xmlns:xacro="http://ros.org/wiki/xacro">
   
   <!--Required to quickly work around bug in collada_urdf (https://github.com/ros/robot_model/issues/132)-->
   <xacro:property name="box_scale_factor" value="1.0" />
